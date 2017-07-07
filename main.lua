@@ -2,7 +2,7 @@ local Game = require "obj.game"
 local Input = require "obj.input"
 
 function sol.onLoad()
-  Game.init(G.width, G.height)
+  Game.init(G.width, G.height, "peach")
   Input.register({
     ["left"]    = {"left", "a"},
     ["right"]   = {"right", "d"},
@@ -21,6 +21,8 @@ function sol.onLoad()
 end
 
 function sol.onUpdate(dt)
+  require("lib.lovebird").update(dt)
+  require("lib.stalker").update(dt)
   Game.update(dt)
 end
 

@@ -50,6 +50,7 @@ function TileMap:loadTMX(filename, imageFile)
   local text = sol.fs.read(filename)
   local ptn = '"csv">(.-)<'
   local s = text:match(ptn)
+  print(s)
   assert(s, "tile layer does not exist")
   local data = _.map(_.split(s, ","), tonumber)
   local width = tonumber(text:match('width="(.-)"'))

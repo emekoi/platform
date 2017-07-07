@@ -6,24 +6,25 @@ local Rect = require "obj.rect"
 local Color = require "obj.color"
 local Input = require "obj.input"
 
+
 function Game:new()
   error("use Game.init() instead")
 end
 
 function Game.init(width, height, color)
   Game.bgcolor = Color[color] and Color[color] or Color["dark-grey"]
+  
+  Game.width = width * G.scale
+  Game.height = height * G.scale
 
-  Game.width = width or G.width
-  Game.height = height or G.height
-
-  Game.framebuffer = sol.Buffer.fromBlank(G.width, G.height)
+  Game.camera = require("obj.camera")(Game, 0, 0, width, height)
+  Game.framebuffer = sol.Buffer.fromBlank(Game.width, Game.height)
   Game.postbuffer = Game.framebuffer:clone()
 end
 
 function Game.update(dt)
-  require("lib.stalker").update()
-  require("lib.lovebird").update()
-
+  Game.camera:update(dt)
+  -- print(Game.framebuffer:getWidth(), Game.width, Game.camera.width)
   -- handle normal keyboard input
   if Input.wasPressed("quit") then
     sol.system.quit()
@@ -46,6 +47,7 @@ function Game.update(dt)
 end
 
 function Game.draw()
+  Game.camera:render(Game)
   
 end
 
